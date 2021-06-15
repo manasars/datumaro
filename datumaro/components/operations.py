@@ -443,7 +443,7 @@ class IntersectMerge(MergingStrategy):
             elif t is AnnotationType.caption:
                 return _make(CaptionsMerger, **kwargs)
             elif t is AnnotationType.cuboid:
-                return _make(PointsMerger, **kwargs)
+                return _make(CuboidMerger, **kwargs)
             else:
                 raise NotImplementedError("Type %s is not supported" % t)
 
@@ -1038,8 +1038,8 @@ def compute_image_statistics(dataset):
         for item in extractor:
             if not (item.has_image and item.image.has_data):
                 available = False
-                log.warn("Item %s has no image. Image stats won't be computed",
-                    item.id)
+                log.warning("Item %s has no image, it will be excluded from "
+                    "image stats", item.id)
                 break
 
         stats = {
