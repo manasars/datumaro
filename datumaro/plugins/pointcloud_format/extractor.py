@@ -28,16 +28,11 @@ class PointCloudExtractor(SourceExtractor):
         if osp.isdir(osp.join(rootpath, PointCloudPath.ANNNOTATION_DIR)):
             images_dir = osp.join(rootpath, PointCloudPath.ANNNOTATION_DIR)
         self._images_dir = images_dir
-        self._path = path
 
         if not subset:
             subset = osp.splitext(osp.basename(path))[0]
 
         super().__init__(subset=subset)
-
-        items, categories = self._parse(path)
-        self._items = list(self._load_items(items).values())
-        self._categories = categories
 
     @classmethod
     def _parse(cls, path):
@@ -120,22 +115,6 @@ class PointCloudExtractor(SourceExtractor):
                     frame_desc['annotations'].append(shape)
                     items[frame] = frame_desc
         return items, categories
-
-    def _load_items(self, parsed):
-        for frame_id, item_desc in parsed.items():
-            name = item_desc.get('name', 'frame_%06d.png' % int(frame_id))
-            image = osp.join(self._images_dir, name)
-            image_size = (item_desc.get('height'), item_desc.get('width'))
-            if all(image_size):
-                image = Image(path=image, size=tuple(map(int, image_size)))
-
-            parsed[frame_id] = DatasetItem(id=osp.splitext(name)[0],
-                                           subset=self._subset, image=image,
-                                           annotations=item_desc.get('annotations'),
-                                           attributes={'frame': int(frame_id)})
-
-        return parsed
-
 
 class PointCloudImporter(Importer):
     @classmethod

@@ -24,15 +24,10 @@ class VelodynePointsExtractor(SourceExtractor):
         if osp.isdir(osp.join(rootpath, VelodynePointsPath.IMAGES_DIR)):
             images_dir = osp.join(rootpath, VelodynePointsPath.IMAGES_DIR)
         self._images_dir = images_dir
-        self._path = path
 
         if not subset:
             subset = osp.splitext(osp.basename(path))[0]
         super().__init__(subset=subset)
-
-        items, categories = self._parse(path)
-        self._items = list(self._load_items(items).values())
-        self._categories = categories
 
     @classmethod
     def _parse(cls, path):
@@ -125,17 +120,6 @@ class VelodynePointsExtractor(SourceExtractor):
                           id=ann_id, attributes=attributes, group=group)
         else:
             raise NotImplementedError("Unknown annotation type '%s'" % ann_type)
-
-    def _load_items(self, parsed):
-        for frame_id, item_desc in parsed.items():
-            name = item_desc.get('name', 'frame_%06d.pcd' % int(frame_id))
-
-            parsed[frame_id] = DatasetItem(id=osp.splitext(name)[0],
-                                           subset=self._subset, related_images=[],
-                                           annotations=item_desc.get('annotations'),
-                                           attributes={'frame': int(frame_id)})
-        return parsed
-
 
 class VelodynePointsImporter(Importer):
     @classmethod

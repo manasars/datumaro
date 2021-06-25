@@ -24,7 +24,6 @@ from .format import VelodynePointsPath, VelodynePointsState
 class XmlAnnotationWriter:
 
     def __init__(self, file, tracklets):
-        self.version = "1.1"
         self._file = file
         self.xmlgen = XMLGenerator(self._file, 'utf-8')
         self._level = 0
@@ -37,8 +36,6 @@ class XmlAnnotationWriter:
         self._item = 1
         self._header = """<?xml version="{}" encoding="{}" standalone="{}" ?>""".format("1.0", 'UTF-8', 'yes')
         self._doctype = """<!DOCTYPE {}>""".format('boost_serialization')
-        self._serialization = """<boost_serialization signature="{}" version="{}">""".format("serialization::archive",
-                                                                                             "9")
 
     def _indent(self, newline=True):
         if newline:
@@ -353,7 +350,6 @@ class _SubsetWriter:
             return index
 
 class VelodynePointsConverter(Converter):
-    DEFAULT_IMAGE_EXT = ".pcd"
 
     @classmethod
     def build_cmdline_parser(cls, **kwargs):
