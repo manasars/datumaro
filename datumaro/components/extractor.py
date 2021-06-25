@@ -488,7 +488,7 @@ class Points(_Shape):
 
     visibility = attrib(type=list, default=None)
     @visibility.validator
-    def _visibility_validator(self, visibility):
+    def _visibility_validator(self, visibility, attribute=None):
         if visibility is None:
             visibility = [self.Visibility.visible] * (len(self.points) // 2)
         else:
@@ -536,7 +536,7 @@ class DatasetItem:
     related_images = attrib(factory=list, validator=default_if_none(list))
 
     @related_images.validator
-    def _related_image_validator(self, related_images):
+    def _related_image_validator(self, related_images, attribute=None):
         self.related_images = []
         image = {}
         for related_image in related_images:
@@ -553,7 +553,7 @@ class DatasetItem:
             self.related_images.append(image)
 
     @pcd.validator
-    def _pcd_validator(self, pcd):
+    def _pcd_validator(self, pcd, attribute=None):
         if pcd:
             assert isinstance(pcd, (bytes, str)) or callable(pcd), type(pcd)
             self.pcd = pcd
