@@ -559,7 +559,7 @@ class DatasetItem:
             self.pcd = pcd
 
     @image.validator
-    def _image_validator(self, image):
+    def _image_validator(self, attribute, image):
         if callable(image) or isinstance(image, np.ndarray):
             image = Image(data=image)
         elif isinstance(image, str):
