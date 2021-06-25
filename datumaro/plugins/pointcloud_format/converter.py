@@ -136,10 +136,11 @@ class PointCloudParser:
             return key.split('__values')[0]
 
     def set_attribute_data(self):
-        flag = False
+        flag = True
         for data in self._annotation:
-            if data.id == "-1":
-                flag = True
+            for _ in data.annotations:
+                flag = False
+                break
             break
 
         attr_list = []
@@ -166,6 +167,7 @@ class PointCloudParser:
 
                     if flag:
                         del tag["values"]
+
                     self._attribute_length += 1
                     self._meta_tags[label_name].update({attrs: tag})
                     attr_list.append(attrs)
@@ -194,7 +196,8 @@ class PointCloudParser:
                             attr_list2.append(key)
 
                             if value is None:
-                                del self._meta_tags[label_name][key]['values']
+                                if isinstance(self._meta_tags[label_name][key].get('values'), list):
+                                    del self._meta_tags[label_name][key]['values']
                             else:
                                 if isinstance(value, bool):
                                     value = "true" if value else "false"
@@ -203,10 +206,12 @@ class PointCloudParser:
                                     self._meta_tags[label_name][key]['values'] = value
                                 elif isinstance(value, str):
                                     self._meta_tags[label_name][key]['value_type'] = 'any_string'
-                                    del self._meta_tags[label_name][key]['values']
+                                    if isinstance(self._meta_tags[label_name][key].get('values'), list):
+                                        del self._meta_tags[label_name][key]['values']
                                 elif isinstance(value, (float, int,)):
                                     self._meta_tags[label_name][key]['value_type'] = 'any_number'
-                                    del self._meta_tags[label_name][key]['values']
+                                    if isinstance(self._meta_tags[label_name][key].get('values'), list):
+                                        del self._meta_tags[label_name][key]['values']
 
                 for key, value in item.attributes.items():
                     if key.endswith("__values") or key in ["label_id", "occluded"] or key in self._attr_list3:
