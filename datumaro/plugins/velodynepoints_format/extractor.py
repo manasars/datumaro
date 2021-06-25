@@ -67,8 +67,13 @@ class VelodynePointsExtractor(SourceExtractor):
                 value = elem.text
                 try:
                     value = float(elem.text)
+                    value = int(value)
                 except ValueError:
                     pass
+                if value == "True":
+                    value = True
+                elif value == "False":
+                    value = False
 
                 annotation_attributes.update({attrs_name: value})
             elif elem.tag == "finished":

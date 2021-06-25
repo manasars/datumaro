@@ -285,7 +285,7 @@ class VelodynePointsConverterTest(TestCase):
         source_dataset = Dataset.from_iterable([
             DatasetItem(id='frame_000000',
                         annotations=[Cuboid3D(id=0,
-                                              attributes={"a1": "true", "a2": 0.1, 'occluded': 0},
+                                              attributes={"a1": "true", "a2": 0, 'occluded': 0},
                                               group=0,
                                               points=[13.54, -9.41, 0.24, 0.0,
                                                       0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -306,7 +306,7 @@ class VelodynePointsConverterTest(TestCase):
         target_dataset = Dataset.from_iterable([
             DatasetItem(id='frame_000000',
                         annotations=[Cuboid3D(id=0,
-                                              attributes={"a1": "true", "a2": 0.1, 'occluded': 0},
+                                              attributes={"a1": "true", "a2": 0, 'occluded': 0},
                                               group=0,
                                               points=[13.54, -9.41, 0.24, 0.0,
                                                       0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
